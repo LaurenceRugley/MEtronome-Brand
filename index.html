@@ -1535,6 +1535,7 @@ async function submitIdeas() {
 
   try {
     const payload = {
+      'email':           'brandstudio@metronomebrand.com',
       'respondent-name': name || 'Anonymous',
       'musician-type':   role  || 'Not specified',
       'brand-feeling':   feel  || 'Not selected',
@@ -1543,8 +1544,7 @@ async function submitIdeas() {
       'open-ideas':      ideas || 'None',
       'logo-votes':      lv,
       'palette-votes':   pv,
-      '_subject':        'MEtronome Brand Studio — New submission',
-      '_replyto':        name ? name + ' (brand studio)' : 'brand-studio@metronomebrand',
+      '_subject':        'MEtronome Brand Studio — New submission from ' + (name || 'Anonymous'),
     };
 
     const res = await fetch('https://formspree.io/f/mreyogrp', {
@@ -1557,15 +1557,15 @@ async function submitIdeas() {
       document.getElementById('success-msg').classList.add('show');
       document.getElementById('success-msg').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       btn.textContent = 'Submitted ✓';
+      btn.disabled = true;
     } else {
-      throw new Error('Network error');
+      const errData = await res.json().catch(() => ({}));
+      throw new Error('Server error ' + res.status + ': ' + JSON.stringify(errData));
     }
   } catch(e) {
-    // Fallback: save locally and still show success
-    try { localStorage.setItem('met_feedback_' + Date.now(), name + '|' + role); } catch(ex){}
-    document.getElementById('success-msg').classList.add('show');
-    document.getElementById('success-msg').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    btn.textContent = 'Submitted ✓';
+    btn.textContent = 'Try again';
+    btn.disabled = false;
+    alert('Something went wrong. Please try again or check your connection.');
   }
 }
 
