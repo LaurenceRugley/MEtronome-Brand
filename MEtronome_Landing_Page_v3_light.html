@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laurence Rugley · Developer & Musician</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg:       #F8F5F0;
+  --bg2:      #F0EBE2;
+  --bg3:      #E8E1D4;
+  --white:    #FFFFFF;
+  --ink:      #16130E;
+  --ink2:     #352E24;
+  --ink3:     #7A7060;
+  --amber:    #A0540C;
+  --amber-lt: #C8720E;
+  --amber-bg: rgba(160,84,12,0.06);
+  --green:    #1A5C3E;
+  --green-lt: #267A52;
+  --green-bg: rgba(26,92,62,0.06);
+  --rule:     #D8D0C2;
+  --shadow:   rgba(22,19,14,0.08);
+  --display:  'Syne', sans-serif;
+  --serif:    'Lora', Georgia, serif;
+  --mono:     'JetBrains Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.1rem 3rem;
+  background: rgba(248,245,240,0.94);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--rule);
+}
+.nav-logo { font-family: var(--display); font-weight: 700; font-size: 1rem; letter-spacing: 0.04em; color: var(--ink); text-decoration: none; }
+.nav-logo .dot { color: var(--amber); }
+.nav-links { display: flex; gap: 2.4rem; list-style: none; }
+.nav-links a { font-family: var(--mono); font-size: 0.67rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover { color: var(--ink); }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: grid; grid-template-columns: 1.15fr 1fr;
+  align-items: center;
+  max-width: 1240px; margin: 0 auto;
+  padding: 9rem 3rem 5rem; gap: 6rem;
+}
+.eyebrow { font-family: var(--mono); font-size: 0.67rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber); margin-bottom: 1.6rem; opacity: 0; animation: up 0.6s 0.1s forwards; }
+.hero-name { font-family: var(--display); font-weight: 800; font-size: clamp(3.2rem, 5.5vw, 5.5rem); line-height: 0.95; letter-spacing: -0.02em; color: var(--ink); margin-bottom: 1rem; opacity: 0; animation: up 0.6s 0.22s forwards; }
+.hero-name .italic-line { display: block; color: var(--ink3); font-weight: 400; font-family: var(--serif); font-style: italic; font-size: 0.68em; letter-spacing: 0; line-height: 1.35; margin-top: 0.3rem; }
+.hero-sub { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink3); margin-bottom: 1.8rem; padding-left: 1rem; border-left: 2px solid var(--amber); opacity: 0; animation: up 0.6s 0.34s forwards; }
+.hero-bio { font-size: 0.92rem; color: var(--ink3); line-height: 1.85; max-width: 460px; margin-bottom: 2.5rem; opacity: 0; animation: up 0.6s 0.46s forwards; }
+.hero-bio strong { color: var(--ink2); font-weight: 500; }
+.hero-cta { display: flex; gap: 0.9rem; flex-wrap: wrap; opacity: 0; animation: up 0.6s 0.58s forwards; }
+
+.btn { display: inline-block; padding: 0.65rem 1.5rem; font-family: var(--mono); font-size: 0.67rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; border-radius: 3px; transition: all 0.18s; }
+.btn-dark  { background: var(--ink); color: var(--bg); border: 1.5px solid var(--ink); }
+.btn-dark:hover  { background: var(--ink2); transform: translateY(-2px); }
+.btn-line  { background: transparent; color: var(--ink2); border: 1.5px solid var(--rule); }
+.btn-line:hover  { border-color: var(--ink3); transform: translateY(-2px); }
+.btn-amber { background: transparent; color: var(--amber); border: 1.5px solid var(--amber); }
+.btn-amber:hover { background: var(--amber-bg); transform: translateY(-2px); }
+
+/* HERO RIGHT */
+.hero-right { display: flex; flex-direction: column; align-items: center; gap: 1.4rem; opacity: 0; animation: fi 1s 0.7s forwards; }
+
+/* Phone */
+.phone { width: 200px; height: 400px; background: var(--ink); border-radius: 36px; box-shadow: 0 40px 80px rgba(22,19,14,0.2), 0 0 0 1px rgba(22,19,14,0.25); position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.phone-notch { position: absolute; top: 14px; width: 62px; height: 18px; background: #000; border-radius: 9px; z-index: 2; }
+.phone-screen { display: flex; flex-direction: column; align-items: center; gap: 12px; padding-top: 14px; }
+.app-icon { width: 64px; height: 64px; border-radius: 16px; background: linear-gradient(135deg, #C07830, #7A4A18); display: flex; align-items: center; justify-content: center; font-size: 28px; box-shadow: 0 4px 16px rgba(0,0,0,0.4); }
+.app-name { font-family: var(--display); font-weight: 700; font-size: 17px; color: #fff; letter-spacing: 0.04em; }
+.bpm-big { font-family: var(--display); font-weight: 800; font-size: 44px; color: #C07830; line-height: 1; letter-spacing: -0.02em; }
+.bpm-unit { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; color: #666; text-transform: uppercase; }
+.pendulum { position: relative; width: 44px; height: 64px; }
+.arm { position: absolute; top: 0; left: 50%; width: 2px; height: 54px; background: linear-gradient(to bottom, #444, #C07830); transform-origin: top center; transform: translateX(-50%); animation: swing 0.52s ease-in-out infinite alternate; border-radius: 2px; }
+.bob { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 11px; height: 11px; background: #C07830; border-radius: 50%; box-shadow: 0 0 8px rgba(192,120,48,0.6); }
+@keyframes swing { from { transform: translateX(-50%) rotate(-24deg); } to { transform: translateX(-50%) rotate(24deg); } }
+
+.phone-stats { display: flex; flex-direction: column; gap: 0.45rem; width: 100%; max-width: 200px; }
+.ps { display: flex; align-items: center; justify-content: space-between; background: var(--white); border: 1px solid var(--rule); border-radius: 4px; padding: 0.48rem 0.75rem; box-shadow: 0 1px 3px var(--shadow); }
+.ps-l { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.08em; color: var(--ink3); text-transform: uppercase; }
+.ps-v { font-family: var(--mono); font-size: 0.66rem; font-weight: 500; color: var(--amber); }
+.ps-v.g { color: var(--green); }
+
+/* DIVIDER */
+hr.divider { border: none; border-top: 1px solid var(--rule); }
+
+/* SECTION */
+section { max-width: 1100px; margin: 0 auto; padding: 6rem 3rem; }
+.slabel { font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber); margin-bottom: 0.5rem; }
+.stitle { font-family: var(--display); font-weight: 700; font-size: clamp(1.9rem, 3vw, 2.8rem); letter-spacing: -0.02em; color: var(--ink); margin-bottom: 0.4rem; line-height: 1.05; }
+.ssub { font-size: 0.87rem; color: var(--ink3); margin-bottom: 3rem; max-width: 460px; line-height: 1.75; }
+
+/* CARDS */
+.grid4 { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.2rem; }
+.grid-main { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 1.4rem; }
+
+.card { background: var(--white); border: 1.5px solid var(--rule); border-radius: 6px; padding: 1.7rem; transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s; }
+.card:hover { box-shadow: 0 12px 36px var(--shadow); transform: translateY(-4px); border-color: var(--ink3); }
+.ctag { font-family: var(--mono); font-size: 0.57rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--amber); background: var(--amber-bg); border: 1px solid rgba(160,84,12,0.18); padding: 0.14rem 0.48rem; border-radius: 2px; display: inline-block; margin-bottom: 0.85rem; }
+.cname { font-family: var(--display); font-weight: 700; font-size: 1.2rem; letter-spacing: -0.02em; color: var(--ink); margin-bottom: 0.45rem; }
+.cdesc { font-size: 0.82rem; color: var(--ink3); line-height: 1.75; margin-bottom: 1rem; }
+.stack { display: flex; flex-wrap: wrap; gap: 0.32rem; }
+.pill { font-family: var(--mono); font-size: 0.57rem; letter-spacing: 0.06em; color: var(--ink3); background: var(--bg2); border: 1px solid var(--rule); padding: 0.13rem 0.42rem; border-radius: 20px; }
+
+/* MUSIC */
+.music-wrap { background: var(--bg2); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.music-inner { max-width: 1100px; margin: 0 auto; padding: 6rem 3rem; display: grid; grid-template-columns: 1fr 1.1fr; gap: 5rem; align-items: start; }
+.mkicker { font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 0.6rem; }
+.band-name { font-family: var(--display); font-weight: 800; font-size: clamp(2.4rem, 4vw, 3.8rem); letter-spacing: -0.03em; line-height: 0.95; color: var(--ink); margin-bottom: 0.4rem; }
+.band-sub { font-family: var(--serif); font-style: italic; font-size: 1rem; color: var(--green); margin-bottom: 0.4rem; line-height: 1.4; }
+.mformed { font-family: var(--mono); font-size: 0.63rem; letter-spacing: 0.1em; color: var(--ink3); text-transform: uppercase; margin-bottom: 1.6rem; }
+.mbio { font-size: 0.9rem; color: var(--ink3); line-height: 1.85; margin-bottom: 1rem; }
+.mbio strong { color: var(--ink2); font-weight: 500; }
+.mbio em { font-style: italic; }
+.mbtns { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-bottom: 1.5rem; }
+.mb { font-family: var(--mono); font-size: 0.61rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green); text-decoration: none; border: 1.5px solid var(--green); padding: 0.32rem 0.82rem; border-radius: 3px; transition: all 0.18s; }
+.mb:hover { background: var(--green-bg); transform: translateY(-1px); }
+.rlabel { font-family: var(--mono); font-size: 0.59rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink3); margin-bottom: 0.3rem; }
+.rvalue { font-size: 0.87rem; color: var(--ink2); }
+
+
+
+.releases { display: flex; flex-direction: column; gap: 1rem; }
+.rc { background: var(--white); border: 1.5px solid var(--rule); border-left: 3px solid var(--green); border-radius: 4px; padding: 1.1rem 1.35rem; box-shadow: 0 1px 4px var(--shadow); }
+.rt { font-family: var(--serif); font-style: italic; font-size: 1.15rem; color: var(--ink); margin-bottom: 0.14rem; }
+.rm { font-family: var(--mono); font-size: 0.59rem; letter-spacing: 0.08em; color: var(--ink3); text-transform: uppercase; margin-bottom: 0.6rem; }
+.rd { font-size: 0.79rem; color: var(--ink3); line-height: 1.65; }
+.badge { display: inline-block; font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--green); background: var(--green-bg); border: 1px solid rgba(26,92,62,0.2); padding: 0.1rem 0.42rem; border-radius: 2px; margin-right: 0.22rem; margin-top: 0.45rem; }
+
+.tbox { background: var(--white); border: 1.5px solid var(--rule); border-radius: 4px; padding: 1.1rem 1.35rem; box-shadow: 0 1px 4px var(--shadow); }
+.th { font-family: var(--mono); font-size: 0.59rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink3); margin-bottom: 0.75rem; padding-bottom: 0.45rem; border-bottom: 1px solid var(--rule); }
+.tr { display: flex; justify-content: space-between; align-items: baseline; padding: 0.26rem 0; border-bottom: 1px solid var(--bg2); font-size: 0.77rem; }
+.tr:last-of-type { border-bottom: none; }
+.tn { color: var(--ink2); font-family: var(--serif); font-style: italic; }
+.tp { font-family: var(--mono); font-size: 0.64rem; color: var(--green); font-weight: 500; }
+.sc-link { display: inline-block; margin-top: 0.75rem; font-family: var(--mono); font-size: 0.59rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green); text-decoration: none; border-bottom: 1px solid var(--green); transition: opacity 0.2s; }
+.sc-link:hover { opacity: 0.65; }
+
+/* SKILLS */
+.skills-box { background: var(--white); border: 1.5px solid var(--rule); border-radius: 6px; padding: 2.4rem; box-shadow: 0 1px 8px var(--shadow); }
+.skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+.sgt { font-family: var(--display); font-weight: 600; font-size: 0.85rem; letter-spacing: 0.02em; color: var(--ink); margin-bottom: 1.2rem; padding-bottom: 0.45rem; border-bottom: 1px solid var(--rule); }
+.srow { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.82rem; }
+.sn { font-size: 0.81rem; color: var(--ink2); font-family: var(--serif); }
+.bwrap { width: 48%; height: 3px; background: var(--bg2); border-radius: 2px; overflow: hidden; }
+.bar { height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--amber), var(--amber-lt)); transform: scaleX(0); transform-origin: left; transition: transform 1.3s cubic-bezier(0.4,0,0.2,1); }
+.bar.g { background: linear-gradient(90deg, var(--green), var(--green-lt)); }
+
+/* TIMELINE */
+.tl { position: relative; padding-left: 1.8rem; }
+.tl::before { content: ''; position: absolute; left: 0; top: 0.5rem; bottom: 0.5rem; width: 1px; background: var(--rule); }
+.tli { position: relative; margin-bottom: 2.3rem; }
+.tld-dot { position: absolute; left: -1.8rem; top: 0.38rem; width: 8px; height: 8px; background: var(--amber); border-radius: 50%; border: 2px solid var(--bg); transform: translateX(-3px); }
+.tld-dot.g { background: var(--green); }
+.tldate { font-family: var(--mono); font-size: 0.61rem; letter-spacing: 0.1em; color: var(--ink3); text-transform: uppercase; margin-bottom: 0.22rem; }
+.tlrole { font-family: var(--display); font-weight: 600; font-size: 0.93rem; color: var(--ink); letter-spacing: -0.01em; margin-bottom: 0.1rem; }
+.tlco { font-size: 0.81rem; color: var(--amber); margin-bottom: 0.38rem; font-family: var(--serif); font-style: italic; }
+.tlco.g { color: var(--green); }
+.tlco a { color: inherit; text-decoration: none; }
+.tlco a:hover { text-decoration: underline; }
+.tldesc { font-size: 0.81rem; color: var(--ink3); line-height: 1.75; }
+.tldesc em { font-style: italic; }
+
+/* CONTACT */
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+.ch { font-family: var(--display); font-weight: 800; font-size: clamp(2.5rem, 4vw, 4rem); letter-spacing: -0.03em; line-height: 0.95; margin-bottom: 1rem; color: var(--ink); }
+.cs { font-size: 0.87rem; color: var(--ink3); line-height: 1.75; margin-bottom: 1.8rem; }
+.ci { font-size: 0.84rem; color: var(--ink3); margin-bottom: 0.55rem; }
+.ci a { color: var(--amber); text-decoration: none; }
+.ci a:hover { text-decoration: underline; }
+.slinks { display: flex; flex-direction: column; gap: 0; }
+.srow { display: flex; align-items: center; gap: 1rem; font-family: var(--mono); font-size: 0.67rem; padding: 0.58rem 0; border-bottom: 1px solid var(--rule); }
+.srow:last-child { border-bottom: none; }
+.sl { color: var(--ink3); min-width: 72px; letter-spacing: 0.08em; text-transform: uppercase; }
+.srow a { color: var(--ink2); text-decoration: none; transition: color 0.2s; }
+.srow a:hover { color: var(--amber); }
+
+footer { border-top: 1px solid var(--rule); padding: 1.8rem 3rem; display: flex; justify-content: space-between; align-items: center; font-family: var(--mono); font-size: 0.61rem; letter-spacing: 0.08em; color: var(--ink3); }
+footer a { color: var(--amber); text-decoration: none; }
+
+@keyframes up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fi  { from { opacity: 0; } to { opacity: 1; } }
+
+@media (max-width: 768px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  .hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 3rem; gap: 3rem; }
+  .hero-right { order: -1; }
+  section { padding: 4rem 1.5rem; }
+  .music-inner { grid-template-columns: 1fr; padding: 4rem 1.5rem; gap: 2rem; }
+  .skills-grid { grid-template-columns: 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  footer { flex-direction: column; gap: 0.4rem; padding: 1.5rem; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#">Laurence<span class="dot">.</span></a>
+  <ul class="nav-links">
+    <li><a href="#metronome">MEtronome</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#music">Music</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div style="max-width:1240px;margin:0 auto;">
+<div class="hero">
+  <div>
+    <p class="eyebrow">iOS Developer · Legal Tech · Musician</p>
+    <h1 class="hero-name">
+      Laurence<br>Rugley
+      <span class="italic-line">Building tools for people who create.</span>
+    </h1>
+    <p class="hero-sub">iOS Dev &nbsp;·&nbsp; eDiscovery &nbsp;·&nbsp; Keyboards &nbsp;·&nbsp; Composer</p>
+    <p class="hero-bio">Self-taught iOS developer and founding keyboards player of <strong>Rebel ShakeDown</strong> — an OC reggae band with 40+ originals, collabs with Shwayze and Kash'd Out, and shared stages with HIRIE and Rome of Sublime w/ Rome. Built MEtronome from scratch. Four years in eDiscovery at The Ellis Law Firm. I write apps. I write music. Sometimes both at once.</p>
+    <div class="hero-cta">
+      <a href="#metronome" class="btn btn-dark">See MEtronome</a>
+      <a href="#music" class="btn btn-amber">Rebel ShakeDown ↓</a>
+      <a href="https://github.com/LaurenceRugley" target="_blank" class="btn btn-line">GitHub</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div class="app-icon">🎵</div>
+        <div class="app-name">MEtronome</div>
+        <div class="pendulum"><div class="arm"><div class="bob"></div></div></div>
+        <div class="bpm-big">120</div>
+        <div class="bpm-unit">BPM</div>
+      </div>
+    </div>
+    <div class="phone-stats">
+      <div class="ps"><span class="ps-l">App Status</span><span class="ps-v">Store Ready</span></div>
+      <div class="ps"><span class="ps-l">Rebel ShakeDown</span><span class="ps-v g">2014 – Present</span></div>
+      <div class="ps"><span class="ps-l">Spotify</span><span class="ps-v g">~5.4K / mo</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<hr class="divider">
+
+<!-- METRONOME DEEP DIVE -->
+<section id="metronome">
+  <p class="slabel">Featured App</p>
+  <h2 class="stitle">MEtronome</h2>
+  <p class="ssub">A precision iOS metronome built by a musician who also writes the Swift. No bloat. Just the beat — and the code behind it.</p>
+  <div class="grid4">
+    <div class="card">
+      <p class="ctag">Audio Engine</p>
+      <h3 class="cname" style="font-size:1rem;">AVAudioEngine</h3>
+      <p class="cdesc" style="font-size:0.8rem;">Sample-accurate timing via GCD <code style="font-family:var(--mono);font-size:0.74rem;background:var(--bg2);padding:0.1rem 0.3rem;border-radius:2px;">.userInteractive</code> queue. No skipped beats.</p>
+    </div>
+    <div class="card">
+      <p class="ctag">Connectivity</p>
+      <h3 class="cname" style="font-size:1rem;">Bluetooth Sync</h3>
+      <p class="cdesc" style="font-size:0.8rem;">MultipeerConnectivity for ensemble sync. Multiple devices, one tempo.</p>
+    </div>
+    <div class="card">
+      <p class="ctag">Monetization</p>
+      <h3 class="cname" style="font-size:1rem;">StoreKit 2 IAP</h3>
+      <p class="cdesc" style="font-size:0.8rem;">Pro tier at $2.99. Clean upgrade flow built with StoreKit 2 best practices.</p>
+    </div>
+    <div class="card">
+      <p class="ctag">Design System</p>
+      <h3 class="cname" style="font-size:1rem;">METheme</h3>
+      <p class="cdesc" style="font-size:0.8rem;">Custom amber palette, dark/light variants. Bebas Neue + Overpass Mono type system.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PROJECTS -->
+<section id="projects">
+  <p class="slabel">What I Build</p>
+  <h2 class="stitle">Projects</h2>
+  <p class="ssub">iOS apps, web tools, and open-source libraries — all built solo, from scratch.</p>
+  <div class="grid-main">
+    <div class="card">
+      <span class="ctag">iOS · Primary</span>
+      <h3 class="cname">MEtronome</h3>
+      <p class="cdesc">Production metronome with AVAudioEngine precision, Bluetooth ensemble sync, practice tracking, goals, and StoreKit 2 IAP. App Store release pending.</p>
+      <div class="stack"><span class="pill">Swift</span><span class="pill">SwiftUI</span><span class="pill">AVAudioEngine</span><span class="pill">MultipeerConnectivity</span><span class="pill">StoreKit 2</span></div>
+    </div>
+    <div class="card">
+      <span class="ctag">iOS + Web</span>
+      <h3 class="cname">CourtVision</h3>
+      <p class="cdesc">NBA stat tracker with animated 2D CoreGraphics shot chart, SceneKit 3D arc visualizations, and RealityKit AR court placement. NBA Stats API.</p>
+      <div class="stack"><span class="pill">Swift</span><span class="pill">SwiftUI</span><span class="pill">SceneKit</span><span class="pill">RealityKit</span><span class="pill">CoreGraphics</span></div>
+    </div>
+    <div class="card">
+      <span class="ctag">iOS + Web</span>
+      <h3 class="cname">Crypto Monitor</h3>
+      <p class="cdesc">Real-time DOGE/BTC/ETH dashboard via Binance WebSocket. iOS mirror with Swift Charts, async/await, AVFoundation alerts. 31 bugs documented across 4 audits.</p>
+      <div class="stack"><span class="pill">Swift</span><span class="pill">Swift Charts</span><span class="pill">WebSocket</span><span class="pill">JavaScript</span></div>
+    </div>
+    <div class="card">
+      <span class="ctag">C++ · Open Source</span>
+      <h3 class="cname">UtilityLib</h3>
+      <p class="cdesc">Header-only C++ algorithms library. Sort::, Search::, Timer:: namespaces. Zero-warning build, full README, on GitHub.</p>
+      <div class="stack"><span class="pill">C++</span><span class="pill">Algorithms</span><span class="pill">Header-Only</span><span class="pill">GitHub</span></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- MUSIC -->
+<div class="music-wrap" id="music">
+<div class="music-inner">
+  <div>
+    <p class="mkicker">Working Musician · Aug 2014 – Present</p>
+    <h2 class="band-name">Rebel<br>ShakeDown</h2>
+    <p class="band-sub">Roots · Rock · Reggae · Huntington Beach, CA</p>
+    <p class="mformed">Formed August 20, 2014 &nbsp;·&nbsp; 30 years combined tour experience</p>
+    <p class="mbio">Rebel ShakeDown formed in 2014 in Huntington Beach, CA. I was recruited as the band's dedicated <strong>keyboards player</strong> to complete a lineup whose members bring <strong>30 years of combined tour experience</strong> from prior well-known SoCal reggae acts.</p>
+    <p class="mbio">Over 10 years we've built a catalog of <strong>40+ original compositions</strong> with collaborations featuring Shwayze, Kash'd Out, Dubbest, Seedless, Karim Israel of Arise Roots, and Dread Kennedy. We've shared the stage with <strong>HIRIE, Fortunate Youth, Eli-Mac, Leilani Wolfgram, and Rome of Sublime w/ Rome</strong>. Debut EP <em>World On Fire</em> produced by Lewis Richards at 17th Street Recording Studio.</p>
+    <div class="mbtns">
+      <a href="https://www.rebelshakedown.com" target="_blank" class="mb">Website</a>
+      <a href="https://open.spotify.com/artist/1LzQAguVTVuGKDfeLzaIvw" target="_blank" class="mb">Spotify</a>
+      <a href="https://soundcloud.com/rebelshakedown" target="_blank" class="mb">SoundCloud</a>
+      <a href="https://www.facebook.com/rebelshakedown" target="_blank" class="mb">Facebook</a>
+    </div>
+    <p class="rlabel">Role</p>
+    <p class="rvalue">Keyboards &nbsp;·&nbsp; Composer &nbsp;·&nbsp; Founding Member</p>
+
+  </div>
+  <div class="releases">
+    <p style="font-family:var(--mono);font-size:0.59rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--green);margin-bottom:0.4rem;">Composition Credits</p>
+    <div class="rc">
+      <h3 class="rt">World On Fire</h3>
+      <p class="rm">Debut EP · July 31, 2015</p>
+      <p class="rd">Produced by Lewis Richards, 17th Street Recording Studio. Featured Casey & Matt of Seedless and Travi Bongo of Fortunate Youth on percussion.</p>
+      <div><span class="badge">Composer</span><span class="badge">Keyboards</span><span class="badge">Studio Recording</span></div>
+    </div>
+    <div class="rc">
+      <h3 class="rt">Lover's Rock</h3>
+      <p class="rm">LP · Rebel ShakeDown</p>
+      <p class="rd">Full-length LP with original keyboard compositions and arrangements.</p>
+      <div><span class="badge">Composer</span><span class="badge">Keyboards</span><span class="badge">Arrangement</span></div>
+    </div>
+    <div class="rc">
+      <h3 class="rt">Singles & Collaborations</h3>
+      <p class="rm">Don't Rock My Boat · Soundwaves · Love's Not Easy feat. Shwayze · My Bad ft. Kash'd Out · Fire Up feat. Dubbest · Moonlight · Always on the Run · and more</p>
+      <p class="rd">Composition credits across 40+ releases, 2014–present.</p>
+      <div><span class="badge">Composer</span><span class="badge">Keyboards</span></div>
+    </div>
+    <div class="tbox">
+      <p class="th">Top SoundCloud Plays</p>
+      <div class="tr"><span class="tn">Don't Rock My Boat</span><span class="tp">2,288</span></div>
+      <div class="tr"><span class="tn">Soundwaves</span><span class="tp">1,460</span></div>
+      <div class="tr"><span class="tn">Live For Today feat. Seedless</span><span class="tp">1,351</span></div>
+      <div class="tr"><span class="tn">Stayin Up</span><span class="tp">1,328</span></div>
+      <div class="tr"><span class="tn">Temperature Rising</span><span class="tp">1,201</span></div>
+      <div class="tr"><span class="tn">Always Free</span><span class="tp">1,123</span></div>
+      <a href="https://soundcloud.com/rebelshakedown" target="_blank" class="sc-link">Full discography on SoundCloud ↗</a>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <p class="slabel">What I Know</p>
+  <h2 class="stitle">Skills</h2>
+  <p class="ssub">From AVAudioEngine to eDiscovery workflows to reggae organ runs.</p>
+  <div class="skills-box">
+    <div class="skills-grid">
+      <div>
+        <p class="sgt">iOS / Software Development</p>
+        <div class="srow"><span class="sn">Swift / SwiftUI</span><div class="bwrap"><div class="bar" data-w="0.9"></div></div></div>
+        <div class="srow"><span class="sn">AVAudioEngine / AVFoundation</span><div class="bwrap"><div class="bar" data-w="0.85"></div></div></div>
+        <div class="srow"><span class="sn">JavaScript / HTML / CSS</span><div class="bwrap"><div class="bar" data-w="0.82"></div></div></div>
+        <div class="srow"><span class="sn">Python</span><div class="bwrap"><div class="bar" data-w="0.78"></div></div></div>
+        <div class="srow"><span class="sn">C++</span><div class="bwrap"><div class="bar" data-w="0.72"></div></div></div>
+        <div class="srow"><span class="sn">Git / GitHub</span><div class="bwrap"><div class="bar" data-w="0.85"></div></div></div>
+      </div>
+      <div>
+        <p class="sgt" style="color:var(--green);">Music & Legal Tech</p>
+        <div class="srow"><span class="sn">Keyboard / Organ (Live & Studio)</span><div class="bwrap"><div class="bar g" data-w="0.95"></div></div></div>
+        <div class="srow"><span class="sn">Music Theory & Composition</span><div class="bwrap"><div class="bar g" data-w="0.88"></div></div></div>
+        <div class="srow"><span class="sn">Audio Synthesis / DSP</span><div class="bwrap"><div class="bar g" data-w="0.78"></div></div></div>
+        <div class="srow"><span class="sn">eDiscovery & Litigation Support</span><div class="bwrap"><div class="bar g" data-w="0.9"></div></div></div>
+        <div class="srow"><span class="sn">Document Review Platforms</span><div class="bwrap"><div class="bar g" data-w="0.87"></div></div></div>
+        <div class="srow"><span class="sn">Legal Writing & Discovery Drafting</span><div class="bwrap"><div class="bar g" data-w="0.82"></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <p class="slabel">Where I've Been</p>
+  <h2 class="stitle">Experience</h2>
+  <p class="ssub">Three parallel careers, one timeline.</p>
+  <div class="tl">
+    <div class="tli">
+      <div class="tld-dot"></div>
+      <p class="tldate">2024 – Present</p>
+      <p class="tlrole">Founder & iOS Developer</p>
+      <p class="tlco">LGR Capital Investments LLC</p>
+      <p class="tldesc">Sole developer of MEtronome iOS app. Architecture, audio engine, design system, Bluetooth sync, StoreKit 2 IAP, App Store submission. Also maintaining UtilityLib (C++) and CourtVision (SwiftUI/AR) on GitHub.</p>
+    </div>
+    <div class="tli">
+      <div class="tld-dot g"></div>
+      <p class="tldate">Aug 2014 – Present</p>
+      <p class="tlrole">Keyboards · Composer · Founding Member</p>
+      <p class="tlco g"><a href="https://www.rebelshakedown.com" target="_blank">Rebel ShakeDown ↗</a></p>
+      <p class="tldesc">Founding keyboards player of OC Roots/Rock/Reggae band. 40+ original compositions. Collabs with Shwayze, Kash'd Out, Dubbest, Seedless. Shared stage with HIRIE, Fortunate Youth, Rome of Sublime w/ Rome. Debut EP <em>World On Fire</em> at 17th Street Recording Studio. ~5.4K monthly Spotify listeners.</p>
+    </div>
+    <div class="tli">
+      <div class="tld-dot"></div>
+      <p class="tldate">2018 – 2022</p>
+      <p class="tlrole">Legal Assistant – Discovery</p>
+      <p class="tlco">The Ellis Law Firm · Huntington Beach, CA</p>
+      <p class="tldesc">End-to-end eDiscovery: document collection, processing, review, production, privilege logs, Bates numbering. Drafted discovery requests and responses. Deep expertise in litigation support tools and legal database management.</p>
+    </div>
+    <div class="tli">
+      <div class="tld-dot"></div>
+      <p class="tldate">2007 – 2016</p>
+      <p class="tlrole">CS · Mathematics · Music · Law</p>
+      <p class="tlco">Mt. San Antonio College · Walnut, CA</p>
+      <p class="tldesc">121 credit hours. Dean's List Spring 2014. C++, Data Structures I & II, Discrete Math. Calculus 1–2. Six years college ensemble performance — Jazz Band, Wind Ensemble, Chamber Winds. ACM ICPC SoCal Regional Competitor.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-grid">
+    <div>
+      <p class="slabel">Get In Touch</p>
+      <h2 class="ch">Let's<br>talk.</h2>
+      <p class="cs">Open to remote iOS developer, eDiscovery, legal tech, and litigation support roles. Also available for music collaborations and band bookings.</p>
+      <div style="margin-bottom:1.2rem;">
+        <p class="ci">📍 Pasadena, CA &nbsp;(Remote-first)</p>
+        <p class="ci">✉️ <a href="mailto:lrugley@gmail.com">lrugley@gmail.com</a></p>
+        <p class="ci">🎵 <a href="https://www.rebelshakedown.com" target="_blank">rebelshakedown.com</a></p>
+        <p class="ci">🎸 <a href="mailto:shakenmanagement@gmail.com">shakenmanagement@gmail.com</a> (band booking)</p>
+      </div>
+      <div style="display:flex;gap:0.8rem;flex-wrap:wrap;">
+        <a href="#" class="btn btn-dark">Download Resume</a>
+        <a href="https://github.com/LaurenceRugley" target="_blank" class="btn btn-line">GitHub</a>
+      </div>
+    </div>
+    <div>
+      <p style="font-family:var(--mono);font-size:0.59rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:0.9rem;">Links</p>
+      <div class="slinks">
+        <div class="srow"><span class="sl">GitHub</span><a href="https://github.com/LaurenceRugley" target="_blank">github.com/LaurenceRugley</a></div>
+        <div class="srow"><span class="sl">Portfolio</span><a href="https://laurencerugley.github.io/MEtronome-Brand/" target="_blank">MEtronome Brand Studio</a></div>
+        <div class="srow"><span class="sl">Band</span><a href="https://www.rebelshakedown.com" target="_blank">rebelshakedown.com</a></div>
+        <div class="srow"><span class="sl">Spotify</span><a href="https://open.spotify.com/artist/1LzQAguVTVuGKDfeLzaIvw" target="_blank">Rebel ShakeDown</a></div>
+        <div class="srow"><span class="sl">SoundCloud</span><a href="https://soundcloud.com/rebelshakedown" target="_blank">soundcloud.com/rebelshakedown</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Laurence Rugley &nbsp;·&nbsp; LGR Capital Investments LLC</span>
+  <span><a href="https://www.rebelshakedown.com">Rebel ShakeDown</a> &nbsp;·&nbsp; Built by hand</span>
+</footer>
+
+<script>
+  const bars = document.querySelectorAll('.bar');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.transform = `scaleX(${e.target.dataset.w})`;
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  bars.forEach(b => obs.observe(b));
+
+  document.querySelectorAll('section, .music-wrap').forEach(s => {
+    s.style.opacity = '0';
+    s.style.transform = 'translateY(20px)';
+    s.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    }, { threshold: 0.06 }).observe(s);
+  });
+</script>
+</body>
+</html>

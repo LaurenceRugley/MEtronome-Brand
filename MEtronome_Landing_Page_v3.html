@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laurence Rugley · iOS Developer · Musician</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg:       #0A0A0F;
+    --bg2:      #111118;
+    --bg3:      #16161F;
+    --amber:    #C07830;
+    --amber-lt: #E8A050;
+    --amber-dk: #7A4A18;
+    --green:    #2D7A4F;
+    --green-lt: #4EAA72;
+    --text:     #E8E4DC;
+    --sub:      #8A8478;
+    --rule:     #2A2820;
+    --mono:     'Space Mono', monospace;
+    --serif:    'DM Serif Display', serif;
+    --sans:     'DM Sans', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 3rem;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--amber);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--sub);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--amber); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 8rem 3rem 4rem;
+    position: relative;
+    gap: 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .hero-left { position: relative; }
+
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero-name {
+    font-family: var(--serif);
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    line-height: 1.05;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.35s forwards;
+  }
+
+  .hero-title {
+    font-family: var(--serif);
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    color: var(--amber);
+    font-style: italic;
+    margin-bottom: 1.8rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.5s forwards;
+  }
+
+  .hero-bio {
+    font-size: 0.95rem;
+    color: var(--sub);
+    line-height: 1.8;
+    max-width: 440px;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.65s forwards;
+  }
+
+  .hero-bio strong { color: var(--text); }
+
+  .hero-cta {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    opacity: 0; animation: fadeUp 0.8s 0.8s forwards;
+  }
+  .btn {
+    display: inline-block;
+    padding: 0.65rem 1.6rem;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 3px;
+    transition: all 0.2s;
+  }
+  .btn-primary {
+    background: var(--amber);
+    color: #0A0A0F;
+    border: 1px solid var(--amber);
+  }
+  .btn-primary:hover {
+    background: var(--amber-lt);
+    border-color: var(--amber-lt);
+    transform: translateY(-1px);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--rule);
+  }
+  .btn-ghost:hover {
+    border-color: var(--sub);
+    color: var(--amber);
+    transform: translateY(-1px);
+  }
+  .btn-music {
+    background: transparent;
+    color: var(--green-lt);
+    border: 1px solid var(--green);
+  }
+  .btn-music:hover {
+    background: rgba(45,122,79,0.15);
+    transform: translateY(-1px);
+  }
+
+  /* Hero right — floating cards */
+  .hero-right {
+    display: flex; flex-direction: column; gap: 1rem;
+    opacity: 0; animation: fadeIn 1s 0.9s forwards;
+  }
+
+  .stat-card {
+    background: var(--bg2);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--amber);
+    border-radius: 6px;
+    padding: 1rem 1.4rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .stat-card.green { border-left-color: var(--green); }
+
+  .stat-icon { font-size: 1.5rem; }
+  .stat-label { font-family: var(--mono); font-size: 0.68rem; color: var(--sub); letter-spacing: 0.1em; text-transform: uppercase; }
+  .stat-value { font-size: 0.9rem; color: var(--text); font-weight: 500; margin-top: 0.1rem; }
+
+  /* ── SECTION WRAPPER ── */
+  section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 6rem 3rem;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 0.6rem;
+  }
+
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+
+  .section-sub {
+    color: var(--sub);
+    font-size: 0.9rem;
+    margin-bottom: 3rem;
+    max-width: 520px;
+  }
+
+  hr.divider {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 0;
+  }
+
+  /* ── PROJECT CARDS ── */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    background: var(--bg2);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 1.8rem;
+    transition: border-color 0.25s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: var(--amber);
+    transform: scaleX(0);
+    transition: transform 0.3s;
+    transform-origin: left;
+  }
+  .project-card:hover::before { transform: scaleX(1); }
+  .project-card:hover { border-color: var(--amber-dk); transform: translateY(-3px); }
+
+  .project-tag {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--amber);
+    background: rgba(192,120,48,0.1);
+    border: 1px solid rgba(192,120,48,0.2);
+    padding: 0.2rem 0.6rem;
+    border-radius: 3px;
+    display: inline-block;
+    margin-bottom: 1rem;
+  }
+
+  .project-name {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    color: var(--text);
+    margin-bottom: 0.6rem;
+  }
+
+  .project-desc {
+    font-size: 0.85rem;
+    color: var(--sub);
+    line-height: 1.7;
+    margin-bottom: 1.2rem;
+  }
+
+  .project-stack {
+    display: flex; flex-wrap: wrap; gap: 0.4rem;
+  }
+
+  .tech-pill {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+    color: var(--sub);
+    background: var(--bg3);
+    border: 1px solid var(--rule);
+    padding: 0.2rem 0.5rem;
+    border-radius: 20px;
+  }
+
+  /* ── MUSIC SECTION ── */
+  .music-section {
+    background: var(--bg2);
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .music-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 6rem 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .music-band-name {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    color: var(--green-lt);
+    font-style: italic;
+    margin-bottom: 0.4rem;
+  }
+
+  .music-subtitle {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--sub);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .music-bio {
+    font-size: 0.9rem;
+    color: var(--sub);
+    line-height: 1.85;
+    margin-bottom: 2rem;
+  }
+  .music-bio strong { color: var(--text); }
+
+  .music-links {
+    display: flex; flex-wrap: wrap; gap: 0.8rem;
+    margin-bottom: 2rem;
+  }
+
+  .music-link {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green-lt);
+    text-decoration: none;
+    border: 1px solid var(--green);
+    padding: 0.4rem 1rem;
+    border-radius: 3px;
+    transition: all 0.2s;
+  }
+  .music-link:hover {
+    background: rgba(45,122,79,0.15);
+    transform: translateY(-1px);
+  }
+
+  .albums-col { display: flex; flex-direction: column; gap: 1.5rem; }
+
+  .album-card {
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--green);
+    border-radius: 6px;
+    padding: 1.4rem 1.6rem;
+  }
+
+  .album-title {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    color: var(--text);
+    font-style: italic;
+    margin-bottom: 0.3rem;
+  }
+
+  .album-meta {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--sub);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.8rem;
+  }
+
+  .album-credits {
+    font-size: 0.83rem;
+    color: var(--sub);
+    line-height: 1.7;
+  }
+
+  .credit-badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green-lt);
+    background: rgba(45,122,79,0.12);
+    border: 1px solid rgba(78,170,114,0.25);
+    padding: 0.15rem 0.55rem;
+    border-radius: 3px;
+    margin-right: 0.4rem;
+    margin-bottom: 0.4rem;
+  }
+
+  /* ── SKILLS BAR SECTION ── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+
+  .skill-group-title {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .skill-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.9rem;
+  }
+
+  .skill-name { font-size: 0.85rem; color: var(--text); }
+
+  .skill-bar-wrap {
+    width: 55%; height: 3px;
+    background: var(--bg3);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .skill-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--amber-dk), var(--amber));
+    border-radius: 2px;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 1.2s cubic-bezier(0.4,0,0.2,1);
+  }
+  .skill-bar.green-bar {
+    background: linear-gradient(90deg, var(--green), var(--green-lt));
+  }
+  .skill-bar.animated { transform: scaleX(1); }
+
+  /* ── EXPERIENCE TIMELINE ── */
+  .timeline { position: relative; padding-left: 2rem; }
+  .timeline::before {
+    content: '';
+    position: absolute; left: 0; top: 0.5rem; bottom: 0.5rem;
+    width: 1px; background: var(--rule);
+  }
+
+  .tl-item { position: relative; margin-bottom: 2.5rem; }
+
+  .tl-dot {
+    position: absolute; left: -2rem;
+    top: 0.35rem;
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--amber);
+    border: 2px solid var(--bg);
+    transform: translateX(-4px);
+  }
+  .tl-dot.green { background: var(--green-lt); }
+
+  .tl-date {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--sub);
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+
+  .tl-role {
+    font-weight: 600;
+    color: var(--text);
+    font-size: 0.95rem;
+    margin-bottom: 0.1rem;
+  }
+
+  .tl-company {
+    font-size: 0.83rem;
+    color: var(--amber);
+    margin-bottom: 0.5rem;
+  }
+  .tl-company.green { color: var(--green-lt); }
+  .tl-company a { color: inherit; text-decoration: none; }
+  .tl-company a:hover { text-decoration: underline; }
+
+  .tl-desc {
+    font-size: 0.83rem;
+    color: var(--sub);
+    line-height: 1.7;
+  }
+
+  /* ── CONTACT ── */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .contact-info p {
+    font-size: 0.9rem;
+    color: var(--sub);
+    margin-bottom: 0.6rem;
+  }
+  .contact-info a { color: var(--amber); text-decoration: none; }
+  .contact-info a:hover { text-decoration: underline; }
+
+  .social-links { display: flex; flex-direction: column; gap: 0.8rem; }
+
+  .social-row {
+    display: flex; align-items: center; gap: 1rem;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--sub);
+    letter-spacing: 0.08em;
+  }
+  .social-row a { color: var(--text); text-decoration: none; transition: color 0.2s; }
+  .social-row a:hover { color: var(--amber); }
+  .social-row .social-label { color: var(--sub); min-width: 80px; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--rule);
+    padding: 2rem 3rem;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--sub);
+  }
+  footer a { color: var(--amber); text-decoration: none; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 3rem; gap: 2rem; }
+    section { padding: 4rem 1.5rem; }
+    .music-inner { grid-template-columns: 1fr; padding: 4rem 1.5rem; gap: 2.5rem; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">L. Rugley</a>
+  <ul class="nav-links">
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#music">Music</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div style="max-width:1200px;margin:0 auto;">
+  <div class="hero">
+    <div class="hero-left">
+      <p class="hero-eyebrow">iOS Developer · Legal Tech · Working Musician</p>
+      <h1 class="hero-name">Laurence<br>Rugley</h1>
+      <p class="hero-title">Code by day. Keys by night.</p>
+      <p class="hero-bio">
+        Self-taught iOS developer and founding keyboards player of <strong>Rebel ShakeDown</strong> — an OC Roots/Rock/Reggae band with 40+ originals, collabs with Shwayze and Kash'd Out, and shared stages with HIRIE, Fortunate Youth, and Rome of Sublime w/ Rome. I built <strong>MEtronome</strong> from scratch using AVAudioEngine and SwiftUI, and spent four years in eDiscovery at The Ellis Law Firm. I write apps. I write music. Sometimes both at once.
+      </p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-primary">View Projects</a>
+        <a href="#music" class="btn btn-music">Rebel Shakedown ↓</a>
+        <a href="https://github.com/LaurenceRugley" class="btn btn-ghost" target="_blank">GitHub</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="stat-card">
+        <div class="stat-icon">🎵</div>
+        <div>
+          <div class="stat-label">MEtronome</div>
+          <div class="stat-value">iOS App · App Store Ready · AVAudioEngine</div>
+        </div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-icon">🎹</div>
+        <div>
+          <div class="stat-label">Rebel Shakedown</div>
+          <div class="stat-value">Keyboards · Founding Member · Aug 2014–Present</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">⚖️</div>
+        <div>
+          <div class="stat-label">Legal Tech</div>
+          <div class="stat-value">4 yrs eDiscovery · The Ellis Law Firm</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">💻</div>
+        <div>
+          <div class="stat-label">Open Source</div>
+          <div class="stat-value">UtilityLib · CourtVision · Crypto Monitor</div>
+        </div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-icon">🎓</div>
+        <div>
+          <div class="stat-label">Mt. SAC · ACM ICPC Competitor</div>
+          <div class="stat-value">CS + Math + Music Theory · 121 Credits</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- PROJECTS -->
+<section id="projects">
+  <p class="section-label">What I Build</p>
+  <h2 class="section-title">Projects</h2>
+  <p class="section-sub">iOS apps, web tools, and open-source libraries — all built solo, from scratch.</p>
+
+  <div class="projects-grid">
+    <div class="project-card">
+      <span class="project-tag">iOS App · Primary</span>
+      <h3 class="project-name">MEtronome</h3>
+      <p class="project-desc">Production-ready iOS metronome with precision AVAudioEngine timing, Bluetooth ensemble sync via MultipeerConnectivity, practice session tracking, and StoreKit 2 IAP. Music theory background embedded in every design decision.</p>
+      <div class="project-stack">
+        <span class="tech-pill">Swift</span>
+        <span class="tech-pill">SwiftUI</span>
+        <span class="tech-pill">AVAudioEngine</span>
+        <span class="tech-pill">MultipeerConnectivity</span>
+        <span class="tech-pill">StoreKit 2</span>
+        <span class="tech-pill">WidgetKit</span>
+        <span class="tech-pill">SwiftData</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <span class="project-tag">iOS + Web</span>
+      <h3 class="project-name">CourtVision</h3>
+      <p class="project-desc">NBA stat tracker with animated 2D CoreGraphics shot chart, SceneKit 3D arc visualizations, and RealityKit AR court placement. Powered by the unofficial NBA Stats API.</p>
+      <div class="project-stack">
+        <span class="tech-pill">Swift</span>
+        <span class="tech-pill">SwiftUI</span>
+        <span class="tech-pill">SceneKit</span>
+        <span class="tech-pill">RealityKit</span>
+        <span class="tech-pill">CoreGraphics</span>
+        <span class="tech-pill">HTML/CSS/JS</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <span class="project-tag">iOS + Web</span>
+      <h3 class="project-name">Crypto Monitor</h3>
+      <p class="project-desc">Real-time DOGE/BTC/ETH dashboard via Binance WebSocket streams. iOS mirror uses Swift Charts, async/await, and AVFoundation price alerts. 31 documented bugs fixed across 4 audit passes.</p>
+      <div class="project-stack">
+        <span class="tech-pill">Swift</span>
+        <span class="tech-pill">Swift Charts</span>
+        <span class="tech-pill">WebSocket</span>
+        <span class="tech-pill">async/await</span>
+        <span class="tech-pill">JavaScript</span>
+        <span class="tech-pill">AVFoundation</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <span class="project-tag">C++ · Open Source</span>
+      <h3 class="project-name">UtilityLib</h3>
+      <p class="project-desc">Header-only C++ algorithms library with Sort::, Search::, and Timer:: namespaces. Zero-warning build. Clean API, full README, hosted on GitHub at LaurenceRugley/UtilityLib.</p>
+      <div class="project-stack">
+        <span class="tech-pill">C++</span>
+        <span class="tech-pill">Algorithms</span>
+        <span class="tech-pill">Header-Only</span>
+        <span class="tech-pill">GitHub</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- MUSIC SECTION -->
+<div class="music-section" id="music">
+  <div class="music-inner">
+    <div>
+      <p class="section-label" style="margin-bottom:0.5rem;">Working Musician · Since 2012</p>
+      <h2 class="music-band-name">Rebel Shakedown</h2>
+      <p class="music-subtitle">Roots · Rock · Reggae · Huntington Beach, CA</p>
+
+      <p class="music-bio">
+        Rebel ShakeDown formed on <strong>August 20, 2014</strong> in Huntington Beach, CA. I was recruited as the band's dedicated keyboards player to complete a lineup of musicians who'd been sharing stages together since 2009 across various well-known SoCal reggae acts — collectively bringing <strong>30 years of tour experience</strong> to the table.
+      </p>
+      <p class="music-bio">
+        We've shared the stage with national acts including <strong>HIRIE, Fortunate Youth, Eli-Mac, Leilani Wolfgram, and Rome of Sublime w/ Rome</strong>. Our debut EP <em>World On Fire</em> was produced by Lewis Richards at 17th Street Recording Studio and featured members of Seedless and Fortunate Youth percussionist Travi Bongo. Over 10 years we've built a catalog of <strong>40+ original compositions</strong> with collaborations featuring Shwayze, Kash'd Out, Dubbest, Karim Israel of Arise Roots, Dread Kennedy, and more. The rhythmic and acoustic intuition I've built on stage and in the studio directly shapes every timing and audio decision in MEtronome.
+      </p>
+
+      <div class="music-links">
+        <a href="https://www.rebelshakedown.com" target="_blank" class="music-link">Website</a>
+        <a href="https://open.spotify.com/artist/1LzQAguVTVuGKDfeLzaIvw" target="_blank" class="music-link">Spotify</a>
+        <a href="https://soundcloud.com/rebelshakedown" target="_blank" class="music-link">SoundCloud</a>
+        <a href="https://www.facebook.com/rebelshakedown" target="_blank" class="music-link">Facebook</a>
+        <a href="https://www.instagram.com/rebelshakedown" target="_blank" class="music-link">Instagram</a>
+      </div>
+
+      <p style="font-family:var(--mono);font-size:0.68rem;letter-spacing:0.1em;color:var(--sub);text-transform:uppercase;">Role</p>
+      <p style="margin-top:0.4rem;font-size:0.9rem;color:var(--text);">Keyboards &nbsp;·&nbsp; Composer &nbsp;·&nbsp; Founding Member</p>
+    </div>
+
+    <div class="albums-col">
+      <p style="font-family:var(--mono);font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--green-lt);margin-bottom:0.8rem;">Composition Credits</p>
+
+      <div class="album-card">
+        <h3 class="album-title">World On Fire</h3>
+        <p class="album-meta">Debut EP &nbsp;·&nbsp; July 31, 2015</p>
+        <p class="album-credits">Produced by Lewis Richards at 17th Street Recording Studio. Featured Casey & Matt of Seedless and Travi Bongo of Fortunate Youth on percussion.</p>
+        <div style="margin-top:0.8rem;">
+          <span class="credit-badge">Composer</span>
+          <span class="credit-badge">Keyboards</span>
+          <span class="credit-badge">Studio Recording</span>
+        </div>
+      </div>
+
+      <div class="album-card">
+        <h3 class="album-title">Lover's Rock</h3>
+        <p class="album-meta">LP &nbsp;·&nbsp; Rebel ShakeDown</p>
+        <p class="album-credits">Full-length LP featuring original keyboard compositions and arrangements across the SoCal Roots/Rock/Reggae catalog.</p>
+        <div style="margin-top:0.8rem;">
+          <span class="credit-badge">Composer</span>
+          <span class="credit-badge">Keyboards</span>
+          <span class="credit-badge">Arrangement</span>
+        </div>
+      </div>
+
+      <div class="album-card">
+        <h3 class="album-title">Notable Collaborations</h3>
+        <p class="album-meta">Singles &nbsp;·&nbsp; 2014–Present</p>
+        <p class="album-credits" style="margin-bottom:0.6rem;">Composition and keyboards across 40+ originals with featured artists:</p>
+        <div>
+          <span class="credit-badge">Shwayze</span>
+          <span class="credit-badge">Kash'd Out</span>
+          <span class="credit-badge">Dubbest</span>
+          <span class="credit-badge">Seedless</span>
+          <span class="credit-badge">Arise Roots</span>
+          <span class="credit-badge">Dread Kennedy</span>
+          <span class="credit-badge">Henosis Music</span>
+        </div>
+      </div>
+
+      <div style="background:var(--bg);border:1px solid var(--rule);border-left:3px solid var(--sub);border-radius:6px;padding:1.2rem 1.6rem;">
+        <p style="font-family:var(--mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--sub);margin-bottom:0.6rem;">Top Tracks by SoundCloud Plays</p>
+        <div style="display:flex;flex-direction:column;gap:0.35rem;">
+          <div style="display:flex;justify-content:space-between;font-size:0.78rem;"><span style="color:var(--text);">Don't Rock My Boat</span><span style="font-family:var(--mono);color:var(--green-lt);font-size:0.7rem;">2,288</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.78rem;"><span style="color:var(--text);">Soundwaves</span><span style="font-family:var(--mono);color:var(--green-lt);font-size:0.7rem;">1,460</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.78rem;"><span style="color:var(--text);">Live For Today feat. Seedless</span><span style="font-family:var(--mono);color:var(--green-lt);font-size:0.7rem;">1,351</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.78rem;"><span style="color:var(--text);">Stayin Up</span><span style="font-family:var(--mono);color:var(--green-lt);font-size:0.7rem;">1,328</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.78rem;"><span style="color:var(--text);">Temperature Rising</span><span style="font-family:var(--mono);color:var(--green-lt);font-size:0.7rem;">1,201</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.78rem;"><span style="color:var(--text);">Always Free</span><span style="font-family:var(--mono);color:var(--green-lt);font-size:0.7rem;">1,123</span></div>
+        </div>
+        <a href="https://soundcloud.com/rebelshakedown" target="_blank" style="display:inline-block;margin-top:0.8rem;font-family:var(--mono);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--green-lt);text-decoration:none;border:1px solid var(--green);padding:0.25rem 0.7rem;border-radius:3px;">Full Discography ↗</a>
+      </div>
+
+      <div style="background:var(--bg);border:1px solid var(--rule);border-left:3px solid var(--sub);border-radius:6px;padding:1.2rem 1.6rem;">
+        <p style="font-family:var(--mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--sub);margin-bottom:0.4rem;">Performance Background</p>
+        <p style="font-size:0.83rem;color:var(--sub);line-height:1.7;">6 years Mt. SAC college ensembles — Jazz Band, Wind Ensemble, Chamber Winds. Music theory coursework. ACM ICPC competitor (solved problem requiring calculus + musical rhythm concepts).</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <p class="section-label">What I Know</p>
+  <h2 class="section-title">Skills</h2>
+  <p class="section-sub">From AVAudioEngine to eDiscovery workflows to reggae organ runs.</p>
+
+  <div class="skills-grid">
+    <div>
+      <p class="skill-group-title">iOS / Software Development</p>
+      <div class="skill-row"><span class="skill-name">Swift / SwiftUI</span><div class="skill-bar-wrap"><div class="skill-bar" data-w="0.9"></div></div></div>
+      <div class="skill-row"><span class="skill-name">AVAudioEngine / AVFoundation</span><div class="skill-bar-wrap"><div class="skill-bar" data-w="0.85"></div></div></div>
+      <div class="skill-row"><span class="skill-name">JavaScript / HTML / CSS</span><div class="skill-bar-wrap"><div class="skill-bar" data-w="0.82"></div></div></div>
+      <div class="skill-row"><span class="skill-name">Python</span><div class="skill-bar-wrap"><div class="skill-bar" data-w="0.78"></div></div></div>
+      <div class="skill-row"><span class="skill-name">C++</span><div class="skill-bar-wrap"><div class="skill-bar" data-w="0.72"></div></div></div>
+      <div class="skill-row"><span class="skill-name">Git / GitHub</span><div class="skill-bar-wrap"><div class="skill-bar" data-w="0.85"></div></div></div>
+    </div>
+    <div>
+      <p class="skill-group-title" style="color:var(--green-lt);">Music &amp; Legal Tech</p>
+      <div class="skill-row"><span class="skill-name">Keyboard / Organ (Live &amp; Studio)</span><div class="skill-bar-wrap"><div class="skill-bar green-bar" data-w="0.95"></div></div></div>
+      <div class="skill-row"><span class="skill-name">Music Theory &amp; Composition</span><div class="skill-bar-wrap"><div class="skill-bar green-bar" data-w="0.88"></div></div></div>
+      <div class="skill-row"><span class="skill-name">Audio Synthesis / DSP Concepts</span><div class="skill-bar-wrap"><div class="skill-bar green-bar" data-w="0.78"></div></div></div>
+      <div class="skill-row"><span class="skill-name">eDiscovery &amp; Litigation Support</span><div class="skill-bar-wrap"><div class="skill-bar green-bar" data-w="0.9"></div></div></div>
+      <div class="skill-row"><span class="skill-name">Document Review Platforms</span><div class="skill-bar-wrap"><div class="skill-bar green-bar" data-w="0.87"></div></div></div>
+      <div class="skill-row"><span class="skill-name">Legal Writing &amp; Discovery Drafting</span><div class="skill-bar-wrap"><div class="skill-bar green-bar" data-w="0.82"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <p class="section-label">Where I've Been</p>
+  <h2 class="section-title">Experience</h2>
+  <p class="section-sub">Three parallel careers, one timeline.</p>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <p class="tl-date">2024 – Present</p>
+      <p class="tl-role">Founder & iOS Developer</p>
+      <p class="tl-company">LGR Capital Investments LLC</p>
+      <p class="tl-desc">Sole developer of MEtronome iOS app. Architecture, design system, audio engine, Bluetooth sync, IAP, App Store submission. Also maintaining UtilityLib (C++) and CourtVision (SwiftUI/AR) on GitHub.</p>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot green"></div>
+      <p class="tl-date">2014 – Present</p>
+      <p class="tl-role">Keyboards · Composer · Founding Member</p>
+      <p class="tl-company green"><a href="https://www.rebelshakedown.com" target="_blank">Rebel ShakeDown ↗</a></p>
+      <p class="tl-desc">Founding keyboards player of OC reggae band formed Aug 20, 2014. 40+ original compositions across 10 years. Collaborations with Shwayze, Kash'd Out, Dubbest, Seedless, and Arise Roots. Debut EP <em>World On Fire</em> produced at 17th Street Recording Studio. Shared stage with HIRIE, Fortunate Youth, Rome of Sublime w/ Rome. ~5.4K monthly Spotify listeners; top track <em>Don't Rock My Boat</em> at 2,288 SoundCloud plays.</p>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <p class="tl-date">2018 – 2022</p>
+      <p class="tl-role">Legal Assistant – Discovery</p>
+      <p class="tl-company">The Ellis Law Firm · Huntington Beach, CA</p>
+      <p class="tl-desc">End-to-end eDiscovery: document collection, processing, review, production, privilege logs, Bates numbering. Drafted discovery requests and responses. Built domain expertise in litigation support tools and legal database management.</p>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <p class="tl-date">2007 – 2016</p>
+      <p class="tl-role">CS · Mathematics · Music · Law</p>
+      <p class="tl-company">Mt. San Antonio College · Walnut, CA</p>
+      <p class="tl-desc">121 credit hours. Dean's List Spring 2014. C++, Data Structures I & II, Discrete Math. Calculus 1–2. Six years of college ensemble performance (Jazz Band, Wind Ensemble, Chamber Winds). ACM ICPC SoCal Regional Competitor.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="section-label">Get In Touch</p>
+  <h2 class="section-title">Contact</h2>
+  <p class="section-sub">Open to remote iOS developer, eDiscovery, legal tech, and litigation support roles.</p>
+
+  <div class="contact-grid">
+    <div class="contact-info">
+      <p>📍 Pasadena, CA (Remote-first)</p>
+      <p>✉️ <a href="mailto:lrugley@gmail.com">lrugley@gmail.com</a></p>
+      <p>🎵 <a href="https://www.rebelshakedown.com" target="_blank">rebelshakedown.com</a></p>
+      <p>🎸 <a href="mailto:shakenmanagement@gmail.com">shakenmanagement@gmail.com</a> (band booking)</p>
+      <div style="margin-top:1.5rem;">
+        <a href="#" class="btn btn-primary" style="margin-right:0.8rem;">Download Resume</a>
+        <a href="https://github.com/LaurenceRugley" target="_blank" class="btn btn-ghost">GitHub</a>
+      </div>
+    </div>
+    <div class="social-links">
+      <div class="social-row"><span class="social-label">GitHub</span><a href="https://github.com/LaurenceRugley" target="_blank">github.com/LaurenceRugley</a></div>
+      <div class="social-row"><span class="social-label">Band Site</span><a href="https://www.rebelshakedown.com" target="_blank">rebelshakedown.com</a></div>
+      <div class="social-row"><span class="social-label">Spotify</span><a href="https://open.spotify.com/artist/1LzQAguVTVuGKDfeLzaIvw" target="_blank">Rebel Shakedown</a></div>
+      <div class="social-row"><span class="social-label">SoundCloud</span><a href="https://soundcloud.com/rebelshakedown" target="_blank">soundcloud.com/rebelshakedown</a></div>
+      <div class="social-row"><span class="social-label">Portfolio</span><a href="https://laurencerugley.github.io/MEtronome-Brand/" target="_blank">MEtronome Brand Studio</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Laurence Rugley &nbsp;·&nbsp; LGR Capital Investments LLC &nbsp;·&nbsp; <a href="https://www.rebelshakedown.com">Rebel Shakedown</a> &nbsp;·&nbsp; Built by hand in HTML/CSS</p>
+</footer>
+
+<script>
+  // Animate skill bars on scroll
+  const bars = document.querySelectorAll('.skill-bar');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const bar = e.target;
+        const w = parseFloat(bar.dataset.w);
+        bar.style.transformOrigin = 'left';
+        bar.style.transition = 'transform 1.2s cubic-bezier(0.4,0,0.2,1)';
+        bar.style.transform = `scaleX(${w})`;
+        observer.unobserve(bar);
+      }
+    });
+  }, { threshold: 0.3 });
+  bars.forEach(b => observer.observe(b));
+
+  // Smooth section reveal
+  const sections = document.querySelectorAll('section, .music-section');
+  const secObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.08 });
+  sections.forEach(s => {
+    s.style.opacity = '0';
+    s.style.transform = 'translateY(24px)';
+    s.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+    secObs.observe(s);
+  });
+</script>
+
+</body>
+</html>
